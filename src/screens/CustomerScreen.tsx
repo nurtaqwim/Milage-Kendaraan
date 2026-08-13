@@ -33,7 +33,7 @@ export function CustomerScreen(props: {
 
       <div className="form-grid two">
         <Field label={props.form.customer.type === 'PERSONAL' ? 'Nama Lengkap' : 'Nama Perusahaan'} required error={props.errors.customerName}>
-          <input value={props.form.customer.name} onChange={(event) => props.onUpdate({ name: event.target.value, identityStatus: 'IDLE' })} />
+          <input value={props.form.customer.name} onChange={(event) => props.onUpdate({ name: event.target.value, identityStatus: 'IDLE' })} placeholder="Contoh: Andi Pratama" />
         </Field>
         {props.form.customer.type === 'PERSONAL' ? (
           <Field label="NIK" required error={props.errors.nik} hint="Harus 16 digit.">
@@ -45,10 +45,10 @@ export function CustomerScreen(props: {
           </Field>
         )}
         <Field label="Email" required error={props.errors.email}>
-          <div className="input-icon"><Mail size={17} /><input type="email" value={props.form.customer.email} onChange={(event) => props.onUpdate({ email: event.target.value })} /></div>
+          <div className="input-icon"><Mail size={17} /><input type="email" value={props.form.customer.email} onChange={(event) => props.onUpdate({ email: event.target.value })} placeholder="nama@email.com" /></div>
         </Field>
         <Field label="Nomor HP" required error={props.errors.phone}>
-          <div className="input-icon"><Phone size={17} /><input inputMode="numeric" value={props.form.customer.phone} onChange={(event) => props.onUpdate({ phone: normalizeDigits(event.target.value) })} /></div>
+          <div className="input-icon"><Phone size={17} /><input inputMode="numeric" value={props.form.customer.phone} onChange={(event) => props.onUpdate({ phone: normalizeDigits(event.target.value) })} placeholder="Contoh: 081234567890" /></div>
         </Field>
         <Field label="Alamat" required error={props.errors.address} className="full-span">
           <div className="address-picker">

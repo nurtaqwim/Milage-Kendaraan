@@ -4,12 +4,12 @@ import { addDaysToLocalDate } from '../utils/format';
 
 export const INITIAL_FORM: QuoteForm = {
   vehicle: {
-    plate: 'B 1234 ABC',
-    brand: 'Honda',
-    model: 'CR-V',
-    year: String(new Date().getFullYear() - 3),
-    sumInsured: '450000000',
-    region: 'DKI Jakarta',
+    plate: '',
+    brand: '',
+    model: '',
+    year: '',
+    sumInsured: '',
+    region: '',
     coverage: 'COMPREHENSIVE',
     policyStart: addDaysToLocalDate(7),
     vehicleUse: 'PRIVATE',
@@ -20,19 +20,19 @@ export const INITIAL_FORM: QuoteForm = {
     stnkExtractedFields: []
   },
   odometer: {
-    value: '24580',
+    value: '',
     fileName: '',
     previewUrl: '',
     scanStatus: 'IDLE',
     scanResult: null
   },
   usage: {
-    commuteDays: '3',
-    commuteOneWayKm: '12',
-    weekendKm: '35',
-    monthlyTripKm: '100',
+    commuteDays: '',
+    commuteOneWayKm: '',
+    weekendKm: '',
+    monthlyTripKm: '',
     knownWeeklyKm: '',
-    parking: 'Garasi / area tertutup',
+    parking: '',
     telematicsConsent: false,
     telematicsStatus: 'IDLE'
   },
@@ -48,12 +48,12 @@ export const INITIAL_FORM: QuoteForm = {
   protection: { addOns: [] },
   customer: {
     type: 'PERSONAL',
-    name: 'Budi Santoso',
+    name: '',
     nik: '',
     npwp: '',
-    email: 'budi@email.com',
-    phone: '081234567890',
-    address: 'Jakarta Selatan',
+    email: '',
+    phone: '',
+    address: '',
     identityFileName: '',
     identityStatus: 'IDLE',
     dataConsent: false,

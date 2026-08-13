@@ -49,10 +49,10 @@ export function VehicleScreen(props: {
           />
         </Field>
         <Field label="Tahun Kendaraan" required error={props.errors.year} hint={age ? `Usia ${age} tahun` : undefined}>
-          <input type="number" min="1980" max={new Date().getFullYear()} value={props.form.vehicle.year} onChange={(event) => props.onUpdate({ year: event.target.value })} />
+          <input type="number" min="1980" max={new Date().getFullYear()} value={props.form.vehicle.year} onChange={(event) => props.onUpdate({ year: event.target.value })} placeholder="Contoh: 2023" />
         </Field>
         <Field label="Harga Pertanggungan" required error={props.errors.sumInsured} hint={sumInsured ? formatCurrency(sumInsured) : 'Masukkan nilai kendaraan'}>
-          <div className="input-prefix"><span>Rp</span><input type="number" min="1" value={props.form.vehicle.sumInsured} onChange={(event) => props.onUpdate({ sumInsured: event.target.value })} /></div>
+          <div className="input-prefix"><span>Rp</span><input type="number" min="1" value={props.form.vehicle.sumInsured} onChange={(event) => props.onUpdate({ sumInsured: event.target.value })} placeholder="Contoh: 450000000" /></div>
         </Field>
         <Field label="Tanggal Mulai Pertanggungan" required error={props.errors.policyStart} hint="Masa polis 12 bulan.">
           <input type="date" value={props.form.vehicle.policyStart} onChange={(event) => props.onUpdate({ policyStart: event.target.value })} />

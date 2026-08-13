@@ -24,16 +24,16 @@ export function UsageScreen(props: {
 
       <div className="form-grid two">
         <Field label="Hari Komuter per Minggu" required error={props.errors.commuteDays}>
-          <input type="number" min="0" max="7" value={props.form.usage.commuteDays} onChange={(event) => props.onUpdate({ commuteDays: event.target.value })} />
+          <input type="number" min="0" max="7" value={props.form.usage.commuteDays} onChange={(event) => props.onUpdate({ commuteDays: event.target.value })} placeholder="Contoh: 5" />
         </Field>
         <Field label="Jarak Sekali Jalan" required error={props.errors.commuteOneWayKm} hint="Rumah ke tujuan, bukan pulang-pergi.">
-          <div className="input-suffix"><input type="number" min="0" value={props.form.usage.commuteOneWayKm} onChange={(event) => props.onUpdate({ commuteOneWayKm: event.target.value })} /><span>km</span></div>
+          <div className="input-suffix"><input type="number" min="0" value={props.form.usage.commuteOneWayKm} onChange={(event) => props.onUpdate({ commuteOneWayKm: event.target.value })} placeholder="Contoh: 16" /><span>km</span></div>
         </Field>
         <Field label="Pemakaian Akhir Pekan" required error={props.errors.weekendKm}>
-          <div className="input-suffix"><input type="number" min="0" value={props.form.usage.weekendKm} onChange={(event) => props.onUpdate({ weekendKm: event.target.value })} /><span>km/minggu</span></div>
+          <div className="input-suffix"><input type="number" min="0" value={props.form.usage.weekendKm} onChange={(event) => props.onUpdate({ weekendKm: event.target.value })} placeholder="Contoh: 45" /><span>km/minggu</span></div>
         </Field>
         <Field label="Perjalanan Panjang Bulanan" required error={props.errors.monthlyTripKm}>
-          <div className="input-suffix"><input type="number" min="0" value={props.form.usage.monthlyTripKm} onChange={(event) => props.onUpdate({ monthlyTripKm: event.target.value })} /><span>km/bulan</span></div>
+          <div className="input-suffix"><input type="number" min="0" value={props.form.usage.monthlyTripKm} onChange={(event) => props.onUpdate({ monthlyTripKm: event.target.value })} placeholder="Contoh: 180" /><span>km/bulan</span></div>
         </Field>
         <Field label="Saya Tahu Rata-Rata Mingguan" hint="Opsional. Jika diisi, angka ini menjadi input utama estimasi berbasis pernyataan nasabah.">
           <div className="input-suffix"><input type="number" min="0" value={props.form.usage.knownWeeklyKm} onChange={(event) => props.onUpdate({ knownWeeklyKm: event.target.value })} placeholder="Contoh: 140" /><span>km</span></div>

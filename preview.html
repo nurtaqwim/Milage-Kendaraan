@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Preview Jasindo Mileage v4.3</title>
+  <link rel="stylesheet" href="src/styles.css" />
+  <style>
+    .icon-box { width: 20px; text-align:center; font-size:18px; }
+    .static-check { width:17px; height:17px; border-radius:50%; background:#176fd0; color:#fff; display:grid; place-items:center; font-size:11px; }
+    .preview-note { position:fixed; right:18px; bottom:18px; background:#172033; color:#fff; padding:9px 12px; border-radius:10px; font-size:12px; z-index:99; box-shadow:0 8px 24px rgba(0,0,0,.18); }
+  </style>
+</head>
+<body>
+<div class="app-shell">
+  <header class="topbar">
+    <div class="brand-wrap"><div class="brand-mark">J</div><div><strong>Jasindo Mileage</strong><span>Perlindungan 1 tahun, premi sesuai pemakaian</span></div></div>
+    <div class="topbar-actions"><span class="autosave-chip">✓ Tersimpan 10.28</span><button class="help-btn">? Bantuan</button><button class="lab-btn">⚙ Prototype Lab</button></div>
+  </header>
+  <div class="workspace">
+    <aside class="flow-sidebar">
+      <div class="sidebar-product"><div class="sidebar-product-icon">♢</div><div><span>Produk</span><strong>Motor Mileage</strong></div></div>
+      <p class="sidebar-title">Progress pembelian</p>
+      <nav class="step-nav">
+        <button class="step-nav-item completed"><span class="step-nav-marker">✓</span><span class="step-nav-copy"><small>Langkah 1</small><strong>Data Kendaraan</strong></span></button>
+        <button class="step-nav-item completed"><span class="step-nav-marker">✓</span><span class="step-nav-copy"><small>Langkah 2</small><strong>Odometer & Bukti</strong></span></button>
+        <button class="step-nav-item completed"><span class="step-nav-marker">✓</span><span class="step-nav-copy"><small>Langkah 3</small><strong>Profil Penggunaan</strong></span></button>
+        <button class="step-nav-item active"><span class="step-nav-marker">4</span><span class="step-nav-copy"><small>Langkah 4</small><strong>Skema Mileage</strong></span><span class="step-arrow">›</span></button>
+        <button class="step-nav-item" disabled><span class="step-nav-marker">5</span><span class="step-nav-copy"><small>Langkah 5</small><strong>Perlindungan</strong></span></button>
+        <button class="step-nav-item" disabled><span class="step-nav-marker">6</span><span class="step-nav-copy"><small>Langkah 6</small><strong>Data Nasabah</strong></span></button>
+        <button class="step-nav-item" disabled><span class="step-nav-marker">7</span><span class="step-nav-copy"><small>Langkah 7</small><strong>Review & Bayar</strong></span></button>
+      </nav>
+      <div class="sidebar-note"><span class="icon-box">🛡</span><div><strong>Polis tetap 12 bulan</strong><span>Mileage mengatur exposure dan premi, bukan masa pertanggungan.</span></div></div>
+    </aside>
+    <main class="content-area">
+      <div class="content-layout">
+        <section class="form-card">
+          <div class="step-heading"><div class="step-heading-icon">↗</div><div><p class="eyebrow">LANGKAH 4 DARI 7</p><h1>Pilih cara pembayaran mileage</h1><p>Di balik layar, mileage band tetap menjadi fondasi tarif. Anda dapat membayar band tahunan atau memulai dari Starter 5.000 km lalu meningkatkan kapasitas saat diperlukan.</p></div></div>
+          <div class="recommendation-hero"><div><span class="icon-box">✦</span><span><small>Rekomendasi berdasarkan rentang penggunaan</small><strong>M10 · sampai 10.000 km</strong><p>Estimasi sisi atas: 8.721 km/tahun.</p></span></div><span class="status-badge status-pass">Paket rekomendasi</span></div>
+          <div class="purchase-mode-grid">
+            <button class="purchase-mode-card selected recommended"><span class="mode-chip">✦ Pilihan fleksibel</span><div class="mode-icon">↻</div><h2>Starter M5 + Top-Up</h2><p>Bayar premi dasar dan komponen M5 di awal. Tambah mileage saat diperlukan; hasil total selalu dipetakan ke band.</p><div class="mode-price"><span>Dibayar sekarang</span><strong>Rp2.775.000</strong></div><div class="mode-check"><span class="static-check">✓</span> Pilih skema fleksibel</div></button>
+            <button class="purchase-mode-card"><span class="mode-chip neutral">Alternatif sederhana</span><div class="mode-icon">◷</div><h2>Band Tahunan</h2><p>Pilih batas tahunan di awal dan bayar premi sesuai band. Upgrade jika penggunaan melebihi pilihan.</p><div class="mode-price"><span>Band rekomendasi</span><strong>Rp3.175.000</strong></div><div class="mode-check">○ Pilih pembayaran penuh</div></button>
+          </div>
+          <section class="plan-section"><div class="section-heading"><div><span>Pengaturan Top-Up</span><h2>Pilih cara penyesuaian saat mileage mendekati batas</h2></div></div><div class="upgrade-mode-grid"><button class="upgrade-mode selected recommended-option"><span class="icon-box">▣</span><span><strong>Top-up manual · direkomendasikan</strong><small>Nasabah memilih T1/T3/T5/T10 setelah reminder dan melihat nominal sebelum membayar.</small></span></button><button class="upgrade-mode"><span class="icon-box">🔔</span><span><strong>Auto-upgrade · pilihan opsional</strong><small>Aktif hanya setelah consent khusus, token pembayaran, dan pre-notification.</small></span></button></div></section>
+          <section class="plan-section"><div class="section-heading"><div><span>Contoh Top-Up dari Starter M5</span><h2>Pack menambah kilometer sesuai nominal</h2><p>Harga mengikuti selisih band dari total quota setelah top-up. Karena T1, T3, dan T5 sama-sama masuk M10, nominal tambahannya sama; T5 ditandai sebagai pilihan paling efisien di M10.</p></div></div><div class="topup-preview-grid"><div class="topup-preview-card"><div><span>T1</span><strong>+1.000 km</strong></div><p>Total 6.000 km · band tarif M10.</p><strong>Rp400.000</strong><small>Selisih M5 → M10.</small></div><div class="topup-preview-card"><div><span>T3</span><strong>+3.000 km</strong></div><p>Total 8.000 km · band tarif M10.</p><strong>Rp400.000</strong><small>Selisih M5 → M10.</small></div><div class="topup-preview-card best-value"><div><span>T5</span><strong>+5.000 km</strong></div><small class="efficiency-chip">Paling efisien di M10</small><p>Total 10.000 km · band tarif M10.</p><strong>Rp400.000</strong><small>Selisih M5 → M10.</small></div><div class="topup-preview-card best-value"><div><span>T10</span><strong>+10.000 km</strong></div><small class="efficiency-chip">Mencapai M15</small><p>Total 15.000 km · band tarif M15.</p><strong>Rp700.000</strong><small>Selisih M5 → M15.</small></div></div></section>
+          <div class="callout callout-info"><div class="callout-icon">i</div><div><strong>Ekspektasi biaya harus transparan</strong><div class="callout-copy">Pembayaran awal lebih rendah, tetapi estimasi total setahun jika mencapai M10 adalah <strong>Rp3.175.000</strong>. Ini mencegah starter price menjadi misleading.</div></div></div>
+          <div class="rule-strip"><span>🔔 Reminder 75% & 90%</span><span>→</span><span>Top-up menambah mileage, bukan mengaktifkan jaminan</span><span>→</span><span>Berakhir bersama polis</span></div>
+          <div class="form-actions"><button class="ghost-btn">← Kembali</button><button class="primary-btn">Lanjutkan →</button></div>
+        </section>
+        <aside class="quote-summary">
+          <div class="summary-card"><div class="summary-card-head"><span>Ringkasan penawaran</span><span>◉</span></div><div class="vehicle-mini"><div class="vehicle-mini-icon">🚙</div><div><strong>Honda CR-V</strong><span>B 1234 ABC · 2023</span></div></div><div class="summary-row"><span>Pertanggungan</span><strong>Comprehensive</strong></div><div class="summary-row"><span>Skema pembelian</span><strong>Starter + Top-Up</strong></div><div class="summary-row"><span>Mileage awal</span><strong>M5 · 5.000 km</strong></div><div class="summary-row"><span>Periode</span><strong>18 Agu 2026 – 17 Agu 2027</strong></div><div class="summary-divider"></div><div class="summary-row"><span>Premi dasar</span><strong>Rp2.100.000</strong></div><div class="summary-row"><span>Komponen mileage</span><strong>Rp650.000</strong></div><div class="summary-row"><span>Administrasi</span><strong>Rp25.000</strong></div><div class="summary-total"><span>Dibayar sekarang</span><strong>Rp2.775.000</strong><small>Mock pricing untuk validasi UX.</small></div><div class="expected-cost"><span>Estimasi total setahun jika mencapai M10</span><strong>Rp3.175.000</strong></div></div>
+          <div class="recommendation-side"><span class="icon-box">✦</span><div><span>Rekomendasi sistem</span><strong>M10 · rentang 6.183–8.721 km</strong><small>Tingkat keyakinan sedang.</small></div></div>
+        </aside>
+      </div>
+    </main>
+  </div>
+</div>
+<div class="preview-note">Static visual preview · source app tetap React + TypeScript</div>
+</body>
+</html>

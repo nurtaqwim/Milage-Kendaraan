@@ -20,8 +20,6 @@ export function ReviewScreen(props: {
   const [consentOpen, setConsentOpen] = useState(false);
   const activeBand = getBand(props.quote.currentBand);
   const allConsents = props.form.finalConsents.annualPolicy && props.form.finalConsents.mileageMechanism && props.form.finalConsents.topUpExpiry && props.form.finalConsents.claimTreatment;
-  const canPay = props.decision.status === 'PASS' || props.decision.status === 'WARN';
-  const blockingReason = props.decision.reasons.find((reason) => reason.status === 'BLOCK');
 
   return (
     <>
@@ -38,6 +36,7 @@ export function ReviewScreen(props: {
         <div className="checkout-summary-section">
           <h2>Informasi kendaraan</h2>
           <SummaryRow label="Merek / tipe" value={`${props.form.vehicle.brand} ${props.form.vehicle.model}`} />
+          <SummaryRow label="Nomor polisi" value={props.form.vehicle.plate} />
           <SummaryRow label="Tahun pembuatan" value={props.form.vehicle.year} />
           <SummaryRow label="Harga pertanggungan" value={formatCurrency(Number(props.form.vehicle.sumInsured || 0))} />
           <SummaryRow label="Periode perlindungan" value={`${formatDate(props.form.vehicle.policyStart)} – ${formatDate(props.policyEnd)}`} />
@@ -61,24 +60,17 @@ export function ReviewScreen(props: {
         </div>
       </section>
 
-      {canPay ? (
-        <>
-          <section className="payment-card checkout-payment-method">
-            <div className="payment-card-head"><CreditCard size={21} /><div><strong>Pilih Metode Pembayaran</strong><span>Pilih metode pembayaran untuk melanjutkan proses polis.</span></div></div>
-            <div className="payment-options">
-              {([['VA', 'Virtual Account'], ['QRIS', 'QRIS'], ['CARD', 'Kartu Debit/Kredit']] as const).map(([code, label]) => (
-                <button type="button" key={code} aria-pressed={props.form.paymentMethod === code} className={`payment-option ${props.form.paymentMethod === code ? 'selected' : ''}`} onClick={() => props.onPaymentMethod(code)}>
-                  <EmptyRadio selected={props.form.paymentMethod === code} /><strong>{label}</strong>
-                </button>
-              ))}
-            </div>
-            {props.errors.paymentMethod && <p className="field-message error" role="alert">{props.errors.paymentMethod}</p>}
-          </section>
-
-        </>
-      ) : props.decision.status === 'REFER' ? (
-        <Callout tone="warning" title="Permohonan akan dikirim untuk ditinjau">Kami akan menghubungi Anda setelah penawaran siap. Tidak ada pembayaran yang ditagihkan saat ini.</Callout>
-      ) : <Callout tone="danger" title={blockingReason?.title || 'Verifikasi belum selesai'}>{blockingReason?.detail || 'Selesaikan verifikasi yang diperlukan sebelum melanjutkan ke pembayaran.'}</Callout>}
+      <section className="payment-card checkout-payment-method">
+        <div className="payment-card-head"><CreditCard size={21} /><div><strong>Pilih Metode Pembayaran</strong><span>Pilih metode pembayaran untuk melanjutkan proses polis.</span></div></div>
+        <div className="payment-options">
+          {([['VA', 'Virtual Account'], ['QRIS', 'QRIS'], ['CARD', 'Kartu Debit/Kredit']] as const).map(([code, label]) => (
+            <button type="button" key={code} aria-pressed={props.form.paymentMethod === code} className={`payment-option ${props.form.paymentMethod === code ? 'selected' : ''}`} onClick={() => props.onPaymentMethod(code)}>
+              <EmptyRadio selected={props.form.paymentMethod === code} /><strong>{label}</strong>
+            </button>
+          ))}
+        </div>
+        {props.errors.paymentMethod && <p className="field-message error" role="alert">{props.errors.paymentMethod}</p>}
+      </section>
 
       <section className={`checkout-consent ${props.errors.annualPolicy || props.errors.mileageMechanism || props.errors.topUpExpiry || props.errors.claimTreatment ? 'invalid' : ''}`}>
         <div className="external-consent-row">

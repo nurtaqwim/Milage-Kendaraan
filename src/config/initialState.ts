@@ -1,17 +1,18 @@
 import { PRODUCT_RULES } from './productConfig';
 import type { QuoteForm } from '../domain/types';
-import { addDaysToLocalDate } from '../utils/format';
 
 export const INITIAL_FORM: QuoteForm = {
   vehicle: {
     plate: '',
+    chassisNumber: '',
+    engineNumber: '',
     brand: '',
     model: '',
     year: '',
     sumInsured: '',
     region: '',
     coverage: 'COMPREHENSIVE',
-    policyStart: addDaysToLocalDate(7),
+    policyStart: '',
     vehicleUse: 'PRIVATE',
     stnkFileName: '',
     stnkStatus: 'IDLE',
@@ -27,6 +28,7 @@ export const INITIAL_FORM: QuoteForm = {
     scanResult: null
   },
   usage: {
+    estimatorEnabled: false,
     commuteDays: '',
     commuteOneWayKm: '',
     weekendKm: '',

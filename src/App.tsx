@@ -69,6 +69,7 @@ export default function App() {
   const [connectingTelematics, setConnectingTelematics] = useState(false);
   const [issuing, setIssuing] = useState(false);
   const [outcome, setOutcome] = useState<'POLICY' | 'REFERRAL' | null>(null);
+  const [premiumChecked, setPremiumChecked] = useState(false);
   const contentRef = useRef<HTMLElement>(null);
   const maxVisitedStepRef = useRef(session.maxVisitedStep);
 
@@ -114,6 +115,10 @@ export default function App() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [session.currentStep]);
 
+  useEffect(() => {
+    if (session.currentStep !== 2) setPremiumChecked(false);
+  }, [session.currentStep]);
+
   const goToStep = (step: number, unlock = false) => {
     const nextMaxVisited = unlock ? Math.max(maxVisitedStepRef.current, step) : maxVisitedStepRef.current;
     if (step > nextMaxVisited) return;
@@ -156,7 +161,7 @@ export default function App() {
       }
     }
 
-    if (step === 1) {
+    if (step === 1 && form.usage.estimatorEnabled) {
       if (Number(form.usage.commuteDays) < 0 || Number(form.usage.commuteDays) > 7) nextErrors.commuteDays = 'Hari komuter harus 0–7.';
       if (Number(form.usage.commuteOneWayKm) < 0) nextErrors.commuteOneWayKm = 'Jarak tidak boleh negatif.';
       if (Number(form.usage.weekendKm) < 0) nextErrors.weekendKm = 'Pemakaian akhir pekan tidak boleh negatif.';
@@ -178,6 +183,9 @@ export default function App() {
     }
 
     if (step === 3) {
+      if (!form.vehicle.plate.trim()) nextErrors.plate = 'Nomor polisi wajib diisi.';
+      if (!form.vehicle.chassisNumber.trim()) nextErrors.chassisNumber = 'Nomor rangka wajib diisi.';
+      if (!form.vehicle.engineNumber.trim()) nextErrors.engineNumber = 'Nomor mesin wajib diisi.';
       if (!form.customer.name.trim()) nextErrors.customerName = 'Nama wajib diisi.';
       if (form.customer.type === 'PERSONAL' && normalizeDigits(form.customer.nik).length !== 16) nextErrors.nik = 'NIK harus 16 digit.';
       if (form.customer.type === 'COMPANY' && normalizeDigits(form.customer.npwp).length < 15) nextErrors.npwp = 'NPWP perusahaan belum valid.';
@@ -228,6 +236,16 @@ export default function App() {
     session.log({ type: 'STEP_COMPLETED', title: `${STEPS[session.currentStep - 1].label} selesai`, detail: `Nasabah melanjutkan ke ${STEPS[next - 1].label}.`, source: 'CUSTOMER' });
   };
 
+  const handlePlanAction = () => {
+    if (!premiumChecked) {
+      setPremiumChecked(true);
+      setBanner(null);
+      window.setTimeout(() => contentRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 0);
+      return;
+    }
+    nextStep();
+  };
+
   const previousStep = () => goToStep(Math.max(1, session.currentStep - 1));
 
   const handleStnkFile = (file: File | null) => {
@@ -239,7 +257,7 @@ export default function App() {
       ...previous,
       vehicle: {
         ...previous.vehicle,
-        brand: 'Honda', model: 'CR-V', year: '2023', sumInsured: '450000000',
+        plate: 'B 1234 ABC', chassisNumber: 'MHFSRU9A0PK123456', engineNumber: 'L15Z12345678', brand: 'Honda', model: 'CR-V', year: '2023', sumInsured: '450000000',
         policyStart: previous.vehicle.policyStart || '2026-08-18', region: 'DKI Jakarta',
         stnkFileName: 'STNK-Honda-CRV-demo.jpg', stnkStatus: 'SUCCESS', stnkConfidence: .96,
         stnkExtractedFields: ['brand', 'model', 'year']
@@ -248,7 +266,7 @@ export default function App() {
         ...previous.odometer, value: '18450', fileName: 'odometer-demo.jpg', scanStatus: 'SUCCESS',
         scanResult: { status: 'SUCCESS', extractedValue: 18450, confidence: .97, qualityChecks: [], reviewReason: '' }
       },
-      usage: { ...previous.usage, commuteDays: '5', commuteOneWayKm: '16', weekendKm: '45', monthlyTripKm: '180', knownWeeklyKm: '', parking: 'Garasi / area tertutup' },
+      usage: { ...previous.usage, estimatorEnabled: true, commuteDays: '5', commuteOneWayKm: '16', weekendKm: '45', monthlyTripKm: '180', knownWeeklyKm: '', parking: 'Garasi / area tertutup' },
       customer: { ...previous.customer, name: 'Andi Pratama', nik: '3174011201900001', email: 'andi.pratama@example.com', phone: '081234567890', address: 'Jl. Sudirman No. 10, Jakarta Selatan', identityFileName: 'KTP-andi-demo.jpg', identityStatus: 'SUCCESS', notificationChannels: ['WHATSAPP'] }
     }));
     session.log({ type: 'DRAFT_SAVED', title: 'Data demo diisi otomatis', detail: 'Data contoh diisi untuk mempercepat simulasi. Consent dan metode pembayaran tetap harus dipilih secara eksplisit.', source: 'CUSTOMER' });
@@ -374,9 +392,9 @@ export default function App() {
       </div>;
       case 2: return <div className="stage-stack">
         <div className="stage-section"><PlanScreen form={session.form} estimate={usageEstimate} quote={quoteComparison} errors={errors} onUpdate={(patch) => session.updateSection('plan', patch)} /></div>
-        <div className="stage-section"><ProtectionScreen form={session.form} breakdown={currentBreakdown} onToggleAddOn={toggleAddOn} /></div>
+        <div className="stage-section"><ProtectionScreen form={session.form} breakdown={currentBreakdown} onToggleAddOn={toggleAddOn} summary={premiumChecked ? <QuoteSummary form={session.form} quote={quoteComparison} usage={usageEstimate} policyEnd={policyEnd} /> : undefined} /></div>
       </div>;
-      case 3: return <CustomerScreen form={session.form} errors={errors} onUpdate={(patch) => session.updateSection('customer', patch)} onIdentityFile={handleIdentityFile} onVerifyIdentity={handleIdentityVerification} verifying={verifyingIdentity} />;
+      case 3: return <CustomerScreen form={session.form} errors={errors} onUpdate={(patch) => session.updateSection('customer', patch)} onUpdateVehicle={(patch) => session.updateSection('vehicle', patch)} onIdentityFile={handleIdentityFile} onVerifyIdentity={handleIdentityVerification} verifying={verifyingIdentity} />;
       case 4: return <ReviewScreen form={session.form} usage={usageEstimate} quote={quoteComparison} decision={decision} risk={riskAssessment} policyEnd={policyEnd} errors={errors} onUpdateConsent={(patch) => session.updateSection('finalConsents', patch)} onPaymentMethod={(paymentMethod) => session.setForm((previous: QuoteForm) => ({ ...previous, paymentMethod }))} onEdit={(step) => goToStep(step <= 3 ? 1 : step <= 5 ? 2 : step === 6 ? 3 : 4)} />;
       default: return null;
     }
@@ -395,37 +413,29 @@ export default function App() {
           <button type="button" className="topbar-nav-item active" onClick={() => goToStep(session.currentStep)}><Package size={17} /> Produk</button>
         </nav>
         <div className="topbar-actions">
-          <span className="autosave-chip"><Save size={15} /> {session.lastSavedAt ? `Tersimpan ${new Date(session.lastSavedAt).toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })}` : 'Draft lokal'}</span>
+          <span className="autosave-chip"><Save size={15} /> {session.lastSavedAt ? `Tersimpan ${new Date(session.lastSavedAt).toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })}` : 'Simulasi baru'}</span>
           <button type="button" className="demo-header-btn" onClick={fillDemoFields}><Sparkles size={16} /> Isi demo</button>
           <button type="button" className="help-btn" onClick={() => setHelpOpen(true)}><HelpCircle size={18} /> Bantuan</button>
           <button type="button" className="lab-btn" onClick={() => setLabOpen(true)}><FlaskConical size={18} /> Prototype Lab</button>
         </div>
       </header>
 
-      <section className="external-hero" aria-labelledby="external-hero-title">
-        <div className="external-hero-inner">
-          <h1 id="external-hero-title">Asuransi Mobil Mileage</h1>
-          <p>Perlindungan mobil selama satu tahun dengan premi yang menyesuaikan pola pemakaian Anda.</p>
-        </div>
-      </section>
-
       <div className="workspace">
         <Stepper steps={STEPS} currentStep={session.currentStep} maxVisitedStep={session.maxVisitedStep} onStepClick={goToStep} />
         <main className="content-area" ref={contentRef} tabIndex={-1}>
-          <div className="content-layout">
+          <div className="content-layout content-layout--single">
             <section className="form-card">
               {banner && <Callout tone={banner.tone} title={banner.title}>{banner.copy}</Callout>}
               {screen}
               <div className="form-actions">
                 <button type="button" className="ghost-btn" onClick={previousStep} disabled={session.currentStep === 1}><ArrowLeft size={18} /> Kembali</button>
                 {session.currentStep < STEPS.length ? (
-                  <button type="button" className="primary-btn" onClick={nextStep}>Lanjutkan <ArrowRight size={18} /></button>
+                  <button type="button" className="primary-btn" onClick={session.currentStep === 2 ? handlePlanAction : nextStep}>{session.currentStep === 2 && !premiumChecked ? 'Cek premi' : 'Lanjutkan'} <ArrowRight size={18} /></button>
                 ) : (
                   <LoadingButton type="button" className="primary-btn pay-btn" loading={issuing} onClick={completeApplication} disabled={decision.status === 'BLOCK'}><LockKeyhole size={17} /> {decision.status === 'REFER' ? 'Kirim untuk Review' : decision.status === 'BLOCK' ? 'Perbaiki Data' : `Bayar ${formatCurrency(quoteComparison.upfront.total)}`}</LoadingButton>
                 )}
               </div>
             </section>
-            <QuoteSummary form={session.form} quote={quoteComparison} usage={usageEstimate} policyEnd={policyEnd} />
           </div>
         </main>
       </div>

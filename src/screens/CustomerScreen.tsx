@@ -8,6 +8,7 @@ export function CustomerScreen(props: {
   form: QuoteForm;
   errors: Record<string, string | undefined>;
   onUpdate: (patch: Partial<QuoteForm['customer']>) => void;
+  onUpdateVehicle: (patch: Partial<QuoteForm['vehicle']>) => void;
   onIdentityFile: (file: File | null) => void;
   onVerifyIdentity: () => void;
   verifying: boolean;
@@ -33,7 +34,7 @@ export function CustomerScreen(props: {
 
       <div className="form-grid two">
         <Field label={props.form.customer.type === 'PERSONAL' ? 'Nama Lengkap' : 'Nama Perusahaan'} required error={props.errors.customerName}>
-          <input value={props.form.customer.name} onChange={(event) => props.onUpdate({ name: event.target.value, identityStatus: 'IDLE' })} placeholder="Contoh: Andi Pratama" />
+          <input value={props.form.customer.name} onChange={(event) => props.onUpdate({ name: event.target.value, identityStatus: 'IDLE' })} placeholder="Sesuai KTP" />
         </Field>
         {props.form.customer.type === 'PERSONAL' ? (
           <Field label="NIK" required error={props.errors.nik} hint="Harus 16 digit.">
@@ -48,7 +49,7 @@ export function CustomerScreen(props: {
           <div className="input-icon"><Mail size={17} /><input type="email" value={props.form.customer.email} onChange={(event) => props.onUpdate({ email: event.target.value })} placeholder="nama@email.com" /></div>
         </Field>
         <Field label="Nomor HP" required error={props.errors.phone}>
-          <div className="input-icon"><Phone size={17} /><input inputMode="numeric" value={props.form.customer.phone} onChange={(event) => props.onUpdate({ phone: normalizeDigits(event.target.value) })} placeholder="Contoh: 081234567890" /></div>
+          <div className="input-icon"><Phone size={17} /><input inputMode="numeric" value={props.form.customer.phone} onChange={(event) => props.onUpdate({ phone: normalizeDigits(event.target.value) })} placeholder="Nomor WhatsApp aktif" /></div>
         </Field>
         <Field label="Alamat" required error={props.errors.address} className="full-span">
           <div className="address-picker">
@@ -57,6 +58,21 @@ export function CustomerScreen(props: {
           </div>
         </Field>
       </div>
+
+      <section className="vehicle-identity-fields">
+        <div><strong>Identitas kendaraan</strong><span>Sesuai yang tercantum pada STNK.</span></div>
+        <div className="vehicle-identity-grid">
+          <Field label="Nomor Polisi" required error={props.errors.plate}>
+            <input value={props.form.vehicle.plate} onChange={(event) => props.onUpdateVehicle({ plate: event.target.value.toUpperCase() })} placeholder="Masukkan nomor polisi / TNKB" />
+          </Field>
+          <Field label="Nomor Rangka" required error={props.errors.chassisNumber}>
+            <input value={props.form.vehicle.chassisNumber} onChange={(event) => props.onUpdateVehicle({ chassisNumber: event.target.value.toUpperCase() })} placeholder="Masukkan nomor rangka kendaraan" />
+          </Field>
+          <Field label="Nomor Mesin" required error={props.errors.engineNumber}>
+            <input value={props.form.vehicle.engineNumber} onChange={(event) => props.onUpdateVehicle({ engineNumber: event.target.value.toUpperCase() })} placeholder="Masukkan nomor mesin kendaraan" />
+          </Field>
+        </div>
+      </section>
 
       <div className="identity-engine-card">
         <div className="identity-engine-head"><div><ScanFace size={23} /><span><strong>Verifikasi identitas</strong><small>Dokumen dicocokkan dengan data yang diisi.</small></span></div><StatusBadge status={props.form.customer.identityStatus} label={props.form.customer.identityStatus === 'SUCCESS' ? 'Terverifikasi' : props.form.customer.identityStatus === 'REVIEW' ? 'Perlu review' : props.form.customer.identityStatus === 'PROCESSING' ? 'Memproses' : 'Belum diproses'} /></div>

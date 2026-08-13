@@ -14,13 +14,14 @@ export function PlanScreen(props: {
   onUpdate: (patch: Partial<QuoteForm['plan']>) => void;
 }) {
   const bandQuotes = getAllBandQuotes(props.form);
-  const recommendedCode = props.estimate.recommendedBand ?? 'M30';
+  const hasRecommendation = props.form.usage.estimatorEnabled && Boolean(props.estimate.recommendedBand);
+  const recommendedCode = hasRecommendation ? props.estimate.recommendedBand! : props.form.plan.selectedBand;
   const recommendedBand = getBand(recommendedCode);
   const selectedBand = getBand(props.form.plan.selectedBand);
   const selectedBelowRecommendation = selectedBand.limitKm < recommendedBand.limitKm;
   const starterOffers = getTopUpPackOffers(PRODUCT_RULES.starterQuotaKm, TOP_UP_PACKS);
 
-  if (!props.estimate.recommendedBand) {
+  if (props.form.usage.estimatorEnabled && !props.estimate.recommendedBand) {
     return (
       <>
         <StepHeading
@@ -52,7 +53,7 @@ export function PlanScreen(props: {
 
       <div className="recommendation-hero">
         <div><Sparkles size={22} /><span><small>Rekomendasi berdasarkan rentang penggunaan</small><strong>{recommendedBand.code} · sampai {formatNumber(recommendedBand.limitKm)} km</strong><p>Estimasi sisi atas: {formatNumber(props.estimate.upperKm)} km/tahun.</p></span></div>
-        <StatusBadge status="PASS" label="Paket rekomendasi" />
+        <StatusBadge status={hasRecommendation ? 'PASS' : 'IDLE'} label={hasRecommendation ? 'Paket rekomendasi' : 'Pilih sendiri'} />
       </div>
 
       <div className="purchase-mode-grid">

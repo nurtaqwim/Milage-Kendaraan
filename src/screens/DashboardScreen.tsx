@@ -318,7 +318,7 @@ export function DashboardScreen(props: {
           <aside className="dashboard-side">
             <article className="dashboard-card">
               <span className="overline">RINGKASAN POLIS</span>
-              <h3>{props.form.vehicle.coverage === 'COMPREHENSIVE' ? 'Comprehensive' : 'TLO'}</h3>
+              <h3>Comprehensive</h3>
               <SummaryRow label="Skema" value={props.form.plan.purchaseMode === 'STARTER_TOPUP' ? 'Starter + Top-Up' : 'Band Tahunan'} />
               <SummaryRow label="Band aktif" value={activeBand.code} />
               <SummaryRow label="Periode" value="12 bulan" />

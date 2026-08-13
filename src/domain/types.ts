@@ -85,6 +85,8 @@ export interface QuoteComparison {
 
 export interface VehicleData {
   plate: string;
+  chassisNumber: string;
+  engineNumber: string;
   brand: string;
   model: string;
   year: string;
@@ -109,6 +111,7 @@ export interface OdometerData {
 }
 
 export interface UsageData {
+  estimatorEnabled: boolean;
   commuteDays: string;
   commuteOneWayKm: string;
   weekendKm: string;

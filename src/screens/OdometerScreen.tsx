@@ -27,7 +27,7 @@ export function OdometerScreen(props: {
       <div className="evidence-layout evidence-layout--simple">
         <section className="evidence-input-card">
           <Field label="Odometer Saat Ini" required error={props.errors.odometer} hint="Masukkan angka tanpa titik atau koma.">
-            <div className="input-suffix"><input type="number" min="0" value={props.form.odometer.value} onChange={(event) => props.onUpdate({ value: event.target.value, scanStatus: 'IDLE', scanResult: null })} placeholder="Contoh: 18450" /><span>km</span></div>
+            <div className="input-suffix"><input type="number" min="0" value={props.form.odometer.value} onChange={(event) => props.onUpdate({ value: event.target.value, scanStatus: 'IDLE', scanResult: null })} placeholder="Angka di speedometer" /><span>km</span></div>
           </Field>
           <Field label="Foto Odometer" required error={props.errors.odometerFile} hint="Ambil foto lurus, tajam, dan bebas pantulan.">
             <UploadBox label="Unggah foto odometer" fileName={props.form.odometer.fileName} accept="image/*" onChange={props.onFile} />

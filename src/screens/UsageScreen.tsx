@@ -13,6 +13,10 @@ export function UsageScreen(props: {
 }) {
   const telematicsConnected = props.form.usage.telematicsStatus === 'SUCCESS';
 
+  if (!props.form.usage.estimatorEnabled) {
+    return <><StepHeading eyebrow="Bantuan pilihan paket" title="Belum yakin memilih mileage?" description="Gunakan estimasi pemakaian bila Anda ingin dibantu memilih paket. Anda juga dapat langsung memilih paket sendiri di langkah berikutnya." icon={<Route size={24} />} /><section className="estimator-choice-card"><div><BrainCircuit size={25} /><span><strong>Bantu saya memilih paket</strong><small>Jawab beberapa pertanyaan singkat tentang pemakaian mobil untuk mendapat rekomendasi mileage.</small></span></div><button type="button" className="secondary-btn" onClick={() => props.onUpdate({ estimatorEnabled: true })}>Mulai estimasi</button></section><p className="estimator-skip-note">Atau lanjutkan untuk memilih paket mileage sendiri.</p></>;
+  }
+
   return (
     <>
       <StepHeading
@@ -21,19 +25,20 @@ export function UsageScreen(props: {
         description="Sistem menyusun rentang mileage dari pola komuter, penggunaan akhir pekan, perjalanan panjang, dan sumber data yang benar-benar terhubung atas persetujuan nasabah."
         icon={<Route size={24} />}
       />
+      <button type="button" className="estimator-back-btn" onClick={() => props.onUpdate({ estimatorEnabled: false, telematicsConsent: false, telematicsStatus: 'IDLE' })}>Saya ingin pilih paket sendiri</button>
 
       <div className="form-grid two">
         <Field label="Hari Komuter per Minggu" required error={props.errors.commuteDays}>
-          <input type="number" min="0" max="7" value={props.form.usage.commuteDays} onChange={(event) => props.onUpdate({ commuteDays: event.target.value })} placeholder="Contoh: 5" />
+          <input type="number" min="0" max="7" value={props.form.usage.commuteDays} onChange={(event) => props.onUpdate({ commuteDays: event.target.value })} placeholder="Hari kerja" />
         </Field>
         <Field label="Jarak Sekali Jalan" required error={props.errors.commuteOneWayKm} hint="Rumah ke tujuan, bukan pulang-pergi.">
-          <div className="input-suffix"><input type="number" min="0" value={props.form.usage.commuteOneWayKm} onChange={(event) => props.onUpdate({ commuteOneWayKm: event.target.value })} placeholder="Contoh: 16" /><span>km</span></div>
+          <div className="input-suffix"><input type="number" min="0" value={props.form.usage.commuteOneWayKm} onChange={(event) => props.onUpdate({ commuteOneWayKm: event.target.value })} placeholder="Jarak sekali jalan" /><span>km</span></div>
         </Field>
         <Field label="Pemakaian Akhir Pekan" required error={props.errors.weekendKm}>
-          <div className="input-suffix"><input type="number" min="0" value={props.form.usage.weekendKm} onChange={(event) => props.onUpdate({ weekendKm: event.target.value })} placeholder="Contoh: 45" /><span>km/minggu</span></div>
+          <div className="input-suffix"><input type="number" min="0" value={props.form.usage.weekendKm} onChange={(event) => props.onUpdate({ weekendKm: event.target.value })} placeholder="Perkiraan per minggu" /><span>km/minggu</span></div>
         </Field>
         <Field label="Perjalanan Panjang Bulanan" required error={props.errors.monthlyTripKm}>
-          <div className="input-suffix"><input type="number" min="0" value={props.form.usage.monthlyTripKm} onChange={(event) => props.onUpdate({ monthlyTripKm: event.target.value })} placeholder="Contoh: 180" /><span>km/bulan</span></div>
+          <div className="input-suffix"><input type="number" min="0" value={props.form.usage.monthlyTripKm} onChange={(event) => props.onUpdate({ monthlyTripKm: event.target.value })} placeholder="Perkiraan per bulan" /><span>km/bulan</span></div>
         </Field>
         <Field label="Saya Tahu Rata-Rata Mingguan" hint="Opsional. Jika diisi, angka ini menjadi input utama estimasi berbasis pernyataan nasabah.">
           <div className="input-suffix"><input type="number" min="0" value={props.form.usage.knownWeeklyKm} onChange={(event) => props.onUpdate({ knownWeeklyKm: event.target.value })} placeholder="Contoh: 140" /><span>km</span></div>

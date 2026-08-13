@@ -19,7 +19,7 @@ export function QuoteSummary(props: {
           <div className="vehicle-mini-icon"><CarFront size={23} /></div>
           <div><strong>{props.form.vehicle.brand} {props.form.vehicle.model}</strong><span>{props.form.vehicle.plate} · {props.form.vehicle.year}</span></div>
         </div>
-        <SummaryRow label="Pertanggungan" value={props.form.vehicle.coverage === 'COMPREHENSIVE' ? 'Comprehensive' : 'TLO'} />
+        <SummaryRow label="Pertanggungan" value="Comprehensive" />
         <SummaryRow label="Skema pembelian" value={props.form.plan.purchaseMode === 'STARTER_TOPUP' ? 'Starter + Top-Up' : 'Band Tahunan'} />
         <SummaryRow label="Mileage awal" value={`${currentBand.code} · ${formatNumber(currentBand.limitKm)} km`} />
         <SummaryRow label="Periode" value={`${formatDate(props.form.vehicle.policyStart)} – ${formatDate(props.policyEnd)}`} />
